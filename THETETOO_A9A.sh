@@ -1,149 +1,48 @@
 #!/usr/bin/env bash
-THIS_DIR=$(cd $(dirname $0); pwd)
-cd $THIS_DIR
 
-update() {
-  git pull
-  git submodule update --init --recursive
-  install_rocks
-}
-
-# Will install luarocks on THIS_DIR/.luarocks
-install_luarocks() {
-  git clone https://github.com/keplerproject/luarocks.git
-  cd luarocks
-  git checkout tags/v2.2.1 # Current stable
-
-  PREFIX="$THIS_DIR/.luarocks"
-
-  ./configure --prefix=$PREFIX --sysconfdir=$PREFIX/luarocks --force-config
-
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  make build && make install
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting.";exit $RET;
-  fi
-
-  cd ..
-  rm -rf luarocks
-}
-
-install_rocks() {
-  ./.luarocks/bin/luarocks install luasocket
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install oauth
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install redis-lua
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install lua-cjson
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install fakeredis
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install luafilesystem
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install lub
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install luaexpat
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi  
-  
-  ./.luarocks/bin/luarocks install xml
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-
-  ./.luarocks/bin/luarocks install feedparser
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-  
-  ./.luarocks/bin/luarocks install serpent
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-  
-  ./.luarocks/bin/luarocks install lunitx
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-  
-  ./.luarocks/bin/luarocks install set
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-  
-  ./.luarocks/bin/luarocks install htmlparser
-  RET=$?; if [ $RET -ne 0 ];
-    then echo "Error. Exiting."; exit $RET;
-  fi
-}
+cd $HOME/THETETOO_A9A
 
 install() {
-  git pull
-  git submodule update --init --recursive
-  cd tg && ./configure && make
-  
-  RET=$?; if [ $RET -ne 0 ]; then
-    echo "Trying without Python...";
-    ./configure --disable-python && make
-    RET=$?
-  fi
-  
-  if [ $RET -ne 0 ]; then
-    echo "Error. Exiting."; exit $RET;
-  fi
-  cd ..
-  install_luarocks
-  install_rocks
+	    cd tg
+		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+		sudo apt-get install g++-4.7 -y c++-4.7 -y
+		sudo apt-get update
+		sudo apt-get upgrade
+		sudo apt-get install libreadline-dev -y libconfig-dev -y libssl-dev -y lua5.2 -y liblua5.2-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
+		sudo apt-get install screen -y
+		sudo apt-get install tmux -y
+		sudo apt-get install libstdc++6 -y
+		sudo apt-get install lua-lgi -y
+		sudo apt-get install libnotify-dev -y
+		sudo service redis-server restart
+		wget https://valtman.name/files/telegram-cli-1222
+		mv telegram-cli-1222 tgcli
+		chmod +x tgcli
+		cd ..
+		chmod +x bot
+		chmod +x tg
 }
 
 if [ "$1" = "install" ]; then
   install
-elif [ "$1" = "update" ]; then
-  update
-else
-  if [ ! -f ./tg/telegram.h ]; then
+  else
+
+if [ ! -f ./tg/tgcli ]; then
     echo "tg not found"
     echo "Run $0 install"
     exit 1
-  fi
-  
-   chmod 777 launch.sh
-   
-  if [ ! -f ./tg/bin/telegram-cli ]; then
-    echo "tg binary not found"
-    echo "Run $0 install"
-    exit 1
-  fi
- 
- rm -r ~/.telegram-cli/state
- 
- echo "Anti CRASH server is : ON"
- 
-  ./tg/bin/telegram-cli -k ./tg/tg-server.pub -s ./VIPTEAM/VIPTEAM.lua -l 1 -E
+fi
+
+if [ "$1" = "-p" ]; then
+    echo -e "\033[38;5;208m"
+    echo -e "     >> THETETOO_A9A Source :BY @no_no2 "
+    echo -e "                                              \033[0;00m"
+    echo -e "\e[36m"
+    ./tg/tgcli -s ./bot/bot.lua -p $2
+fi
+   echo -e "\033[38;5;208m"
+   echo -e "     >> THETETOO_A9ASource :BY @no_no2 "
+   echo -e "                                              \033[0;00m"
+   echo -e "\e[36m"
+   ./tg/tgcli -s ./bot/bot.lua -l 1 -E $@
 fi
